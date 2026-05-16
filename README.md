@@ -29,22 +29,27 @@ Dar ao **Prefeito** e equipe de gabinete uma visão 360° do município, combina
 
 ---
 
-## 3. Identidade Visual
+## 3. Identidade Visual (oficial CintIA)
 
-Inspirada na fusão **WhatsApp + IA + Gestão Pública**:
+Baseada na logo **CintIA**: "Cint" branco + estrela ✦ + "IA" em gradiente azul→roxo→rosa, sobre fundo preto.
 
 | Token | Hex | Uso |
 |---|---|---|
-| `--cintia-green` | `#00C896` | Cor primária (Cintia / WhatsApp moderno) |
-| `--cintia-deep` | `#0A1628` | Fundo dark mode |
-| `--cintia-violet` | `#8B5CF6` | Acento IA (insights, ML) |
-| `--cintia-amber` | `#F59E0B` | Destaques, atenção |
-| `--cintia-coral` | `#FF6B6B` | Urgência, atrasos |
-| `--cintia-sky` | `#38BDF8` | Informacional |
+| `--cintia-P` (Purple) | `#5f2bdb` | Início do gradiente, cor brand primária |
+| `--cintia-M` (Magenta) | `#b020c0` | Meio do gradiente |
+| `--cintia-K` (Pink) | `#e8247a` | Fim do gradiente, destaque |
+| `--cintia-B` (Blue) | `#1a0ecc` | Azul profundo (orb de fundo) |
+| `--cintia-lav` (Lavender) | `#a78bfa` | Texto de acento, links |
+| Fundo dark | `#000000` | Preto puro |
+| Branco | `#FFFFFF` | Texto principal sobre preto |
+
+**Gradiente assinatura**: `linear-gradient(90deg, #5f2bdb 0%, #b020c0 55%, #e8247a 100%)` — usado em logo, botões primários, KPI destacados, áreas de gráfico.
 
 **Tipografia**:
-- UI: `Inter` (Google Fonts) — 400/500/600/700
-- Dados/Números: `JetBrains Mono` — para KPIs e métricas
+- UI: `Nunito` (Google Fonts) — 300/400/500/600/700/800/900
+- Dados/Números: `DM Mono` — para KPIs, SLAs, protocolos
+
+**Background**: três orbs gradientes (purple, pink, blue) com `filter: blur(90px)` flutuando lentamente + estrela de 4 pontas da logo girando em câmera lenta (180s) com opacidade 4%.
 
 **Princípios visuais**:
 - SVG refinado em ícones, logo e detalhes (sem ícones rasterizados)

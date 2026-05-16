@@ -3,51 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Cintia — Gabinete do Prefeito</title>
-  <meta name="description" content="Painel analítico para gestão pública municipal, alimentado pela agente de IA Cintia (WhatsApp)." />
-  <meta name="theme-color" content="#0A1628" />
+  <title>CintIA — Gabinete do Prefeito</title>
+  <meta name="description" content="Painel analítico para gestão pública municipal, alimentado pela CintIA — agente de IA que conecta cidadãos a serviços públicos via WhatsApp." />
+  <meta name="theme-color" content="#000000" />
+  <meta property="og:title" content="CintIA — A Inteligência que Conecta sua Prefeitura ao Cidadão" />
+  <meta property="og:description" content="Modernizando a gestão pública municipal com IA no WhatsApp." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300C896'/%3E%3Cstop offset='1' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M20 38a14 14 0 1 1 7 12l-9 2 3-8z' fill='white'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='16' fill='%23000'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%236600FF'/%3E%3Cstop offset='1' stop-color='%23E8247A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='8' y='58' font-family='Arial Black,sans-serif' font-weight='900' font-size='52' fill='white'%3EC%3C/text%3E%3Ctext x='44' y='58' font-family='Arial Black,sans-serif' font-weight='900' font-size='52' fill='url(%23g)'%3EI%3C/text%3E%3C/svg%3E" />
 
   <link rel="stylesheet" href="css/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 </head>
 <body>
+
+  <!-- ============================================== -->
+  <!-- BACKGROUND: orbs gradiente + estrela sutil    -->
+  <!-- ============================================== -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <svg class="bg-star" viewBox="0 0 800 800" aria-hidden="true">
+    <defs>
+      <linearGradient id="starStroke" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5f2bdb" stop-opacity="0.6"/>
+        <stop offset="1" stop-color="#e8247a" stop-opacity="0.6"/>
+      </linearGradient>
+    </defs>
+    <!-- Estrela 4 pontas da identidade -->
+    <path d="M400 40 C 380 280, 280 380, 40 400 C 280 420, 380 520, 400 760 C 420 520, 520 420, 760 400 C 520 380, 420 280, 400 40 Z"
+      fill="none" stroke="url(#starStroke)" stroke-width="1.2"/>
+  </svg>
+
   <div class="app">
 
     <!-- ============================================== -->
     <!-- SIDEBAR                                        -->
     <!-- ============================================== -->
     <aside class="sidebar">
-      <div class="brand">
-        <svg class="brand-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#00C896"/>
-              <stop offset="1" stop-color="#8B5CF6"/>
-            </linearGradient>
-            <filter id="brandGlow"><feGaussianBlur stdDeviation="1.2"/></filter>
-          </defs>
-          <rect width="64" height="64" rx="16" fill="url(#brandGrad)"/>
-          <path d="M20 38a14 14 0 1 1 7 12l-9 2 3-8z" fill="white" opacity="0.95"/>
-          <circle cx="28" cy="36" r="1.8" fill="#00C896"/>
-          <circle cx="34" cy="36" r="1.8" fill="#00C896"/>
-          <circle cx="40" cy="36" r="1.8" fill="#00C896"/>
-        </svg>
-        <div class="brand-text">
-          <div class="brand-name">Cintia</div>
-          <div class="brand-sub">Gestão Pública</div>
+      <a href="#" class="brand">
+        <div>
+          <span class="cintia-logo cintia-logo-md">
+            <span class="cl-c">Cint</span><span class="cl-star">✦</span><span class="cl-ia">IA</span>
+          </span>
+          <span class="brand-sub">Gabinete · RN</span>
         </div>
-      </div>
+      </a>
 
       <div class="nav-label">Painel</div>
 
       <button class="nav-item active" data-section="overview">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
         <span class="nav-text">Visão Geral</span>
       </button>
 
@@ -73,8 +85,8 @@
       </button>
 
       <button class="nav-item" data-section="cintia">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-        <span class="nav-text">Cintia AI</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
+        <span class="nav-text">CintIA Core</span>
       </button>
 
       <div class="nav-label">Sistema</div>
@@ -113,12 +125,12 @@
             <input type="search" placeholder="Buscar demanda, cidadão, protocolo..." />
           </div>
 
-          <button class="icon-btn" title="Notificações">
+          <button class="icon-btn" title="Notificações" aria-label="Notificações">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <span class="dot"></span>
           </button>
 
-          <button class="theme-toggle" id="themeToggle" title="Alternar tema">
+          <button class="theme-toggle" id="themeToggle" title="Alternar tema" aria-label="Alternar tema">
             <div class="theme-toggle-thumb">
               <svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
               <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -168,27 +180,24 @@
         <!-- ============================================== -->
         <section class="section active" id="section-overview">
 
-          <!-- Insight da IA -->
           <div class="insight-card" id="insightCard">
             <div class="insight-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
             </div>
             <div class="insight-body">
-              <div class="insight-label">Insight gerado pela Cintia</div>
+              <div class="insight-label">Insight gerado pela CintIA</div>
               <p class="insight-text" id="insightText">—</p>
             </div>
           </div>
 
-          <!-- KPIs -->
           <div class="kpi-grid" id="kpiGrid"></div>
 
-          <!-- Gráficos linha 1: atendimentos + categorias -->
           <div class="charts-grid">
             <div class="card">
               <div class="card-header">
                 <div>
-                  <h3 class="card-title">Atendimentos da Cintia (30 dias)</h3>
-                  <p class="card-sub">Cintia resolveu autonomamente vs. encaminhamento humano</p>
+                  <h3 class="card-title">Atendimentos da CintIA (30 dias)</h3>
+                  <p class="card-sub">Resolução autônoma vs. encaminhamento humano</p>
                 </div>
                 <button class="card-action">Ver detalhes</button>
               </div>
@@ -199,20 +208,19 @@
               <div class="card-header">
                 <div>
                   <h3 class="card-title">Demandas por categoria</h3>
-                  <p class="card-sub">Distribuição mensal</p>
+                  <p class="card-sub">Distribuição do mês</p>
                 </div>
               </div>
               <div class="chart-wrap"><canvas id="chartCategoria"></canvas></div>
             </div>
           </div>
 
-          <!-- Linha 2: demandas recentes + alertas -->
           <div class="charts-grid">
             <div class="card">
               <div class="card-header">
                 <div>
                   <h3 class="card-title">Demandas recentes</h3>
-                  <p class="card-sub">Últimas 6 demandas registradas pela Cintia</p>
+                  <p class="card-sub">Últimas 6 demandas registradas pela CintIA</p>
                 </div>
                 <button class="card-action" data-goto="demandas">Ver todas →</button>
               </div>
@@ -257,7 +265,7 @@
                 <div><div class="kpi-label">Em aberto</div></div>
               </div>
               <div class="kpi-value">324</div>
-              <div class="kpi-trend up"><span class="lbl">↑ 12 hoje</span></div>
+              <span class="kpi-trend up"><span class="lbl">↑ 12 hoje</span></span>
             </div>
             <div class="kpi-card">
               <div class="kpi-header">
@@ -265,15 +273,15 @@
                 <div><div class="kpi-label">Em andamento</div></div>
               </div>
               <div class="kpi-value">186</div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 8.4%</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 8.4%</span>
             </div>
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
                 <div><div class="kpi-label">Resolvidas (30d)</div></div>
               </div>
-              <div class="kpi-value">9.234</div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 4.2%</div>
+              <div class="kpi-value grad">9.234</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 4.2%</span>
             </div>
             <div class="kpi-card">
               <div class="kpi-header">
@@ -281,7 +289,7 @@
                 <div><div class="kpi-label">Atrasadas (SLA)</div></div>
               </div>
               <div class="kpi-value">47</div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 10l-5 5-5-5z"/></svg> 22% (bom)</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 10l-5 5-5-5z"/></svg> 22% (bom)</span>
             </div>
           </div>
 
@@ -289,7 +297,7 @@
             <div class="card-header">
               <div>
                 <h3 class="card-title">Todas as demandas</h3>
-                <p class="card-sub">Registros gerados pela Cintia · ordenadas por mais recente</p>
+                <p class="card-sub">Registros gerados pela CintIA · ordenadas por mais recente</p>
               </div>
               <button class="card-action">+ Nova manual</button>
             </div>
@@ -323,35 +331,35 @@
           <div class="kpi-grid">
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+                <div class="kpi-icon amber"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
                 <div><div class="kpi-label">Nota média</div></div>
               </div>
               <div class="kpi-value">4.6<small> / 5</small></div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 2.2% vs. mês anterior</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 2.2%</span>
             </div>
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                <div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
                 <div><div class="kpi-label">NPS Geral</div></div>
               </div>
-              <div class="kpi-value">+72</div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 8.0% trimestre</div>
+              <div class="kpi-value grad">+72</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 8.0%</span>
             </div>
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-                <div><div class="kpi-label">Total de avaliações</div></div>
+                <div class="kpi-icon pink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div><div class="kpi-label">Total avaliações</div></div>
               </div>
               <div class="kpi-value">7.740</div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 18% no mês</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 18%</span>
             </div>
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg></div>
+                <div class="kpi-icon magenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg></div>
                 <div><div class="kpi-label">Resposta &lt; 5min</div></div>
               </div>
               <div class="kpi-value">87.4<small>%</small></div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> +6pts</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> +6pts</span>
             </div>
           </div>
 
@@ -360,7 +368,7 @@
               <div class="card-header">
                 <div>
                   <h3 class="card-title">NPS por secretaria</h3>
-                  <p class="card-sub">Comparativo trimestre atual vs. anterior</p>
+                  <p class="card-sub">Trimestre atual vs. anterior</p>
                 </div>
               </div>
               <div class="chart-wrap lg"><canvas id="chartNpsRadar"></canvas></div>
@@ -370,7 +378,7 @@
               <div class="card-header">
                 <div>
                   <h3 class="card-title">Distribuição de avaliações</h3>
-                  <p class="card-sub">7.740 avaliações nos últimos 30 dias</p>
+                  <p class="card-sub">7.740 avaliações em 30 dias</p>
                 </div>
               </div>
               <div id="ratingDistribution"></div>
@@ -381,10 +389,10 @@
             <div class="card-header">
               <div>
                 <h3 class="card-title">Voz do cidadão · palavras mais citadas</h3>
-                <p class="card-sub">Extraído das mensagens via análise semântica</p>
+                <p class="card-sub">Extraído das mensagens via análise semântica da CintIA</p>
               </div>
             </div>
-            <div id="wordCloud" style="display:flex; flex-wrap:wrap; gap:12px; padding:20px 0; align-items:center; justify-content:center; min-height:200px;"></div>
+            <div id="wordCloud" style="display:flex; flex-wrap:wrap; gap:10px; padding:24px 0; align-items:center; justify-content:center; min-height:200px;"></div>
           </div>
 
         </section>
@@ -398,44 +406,43 @@
             <div class="card-header">
               <div>
                 <h3 class="card-title">Mapa de calor de demandas por bairro</h3>
-                <p class="card-sub">Quanto maior e mais quente o ponto, maior o volume</p>
+                <p class="card-sub">Quanto maior e mais intenso o ponto, maior o volume</p>
               </div>
             </div>
             <div class="heatmap-wrap">
-              <div id="heatmapContainer">
+              <div>
                 <svg class="heatmap-svg" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" id="heatmapSvg">
                   <defs>
                     <radialGradient id="heatHot" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stop-color="#FF6B6B" stop-opacity="0.9"/>
-                      <stop offset="60%" stop-color="#F59E0B" stop-opacity="0.4"/>
-                      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+                      <stop offset="0%" stop-color="#e8247a" stop-opacity="0.85"/>
+                      <stop offset="55%" stop-color="#b020c0" stop-opacity="0.4"/>
+                      <stop offset="100%" stop-color="#5f2bdb" stop-opacity="0"/>
                     </radialGradient>
                     <radialGradient id="heatMed" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.8"/>
-                      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+                      <stop offset="0%" stop-color="#b020c0" stop-opacity="0.7"/>
+                      <stop offset="100%" stop-color="#5f2bdb" stop-opacity="0"/>
                     </radialGradient>
                     <radialGradient id="heatLow" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.65"/>
-                      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+                      <stop offset="0%" stop-color="#5f2bdb" stop-opacity="0.55"/>
+                      <stop offset="100%" stop-color="#5f2bdb" stop-opacity="0"/>
                     </radialGradient>
                     <pattern id="gridP" width="40" height="40" patternUnits="userSpaceOnUse">
-                      <path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                      <path d="M40 0H0V40" fill="none" stroke="rgba(167,139,250,0.06)" stroke-width="1"/>
                     </pattern>
                   </defs>
                   <rect width="800" height="400" fill="url(#gridP)"/>
-                  <!-- "ruas" estilizadas -->
-                  <path d="M0 200 Q200 180 400 200 T800 220" stroke="rgba(255,255,255,0.06)" stroke-width="40" fill="none"/>
-                  <path d="M400 0 Q420 200 400 400" stroke="rgba(255,255,255,0.04)" stroke-width="30" fill="none"/>
+                  <path d="M0 200 Q200 180 400 200 T800 220" stroke="rgba(167,139,250,0.10)" stroke-width="40" fill="none"/>
+                  <path d="M400 0 Q420 200 400 400" stroke="rgba(167,139,250,0.07)" stroke-width="30" fill="none"/>
                   <g id="heatmapPoints"></g>
                   <g id="heatmapLabels"></g>
                 </svg>
               </div>
 
               <div>
-                <div style="margin-bottom: 14px; display:flex; gap:8px; font-size:11px; color:var(--text-muted);">
-                  <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#FF6B6B;"></span>Alta</span>
-                  <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#F59E0B;"></span>Média</span>
-                  <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#38BDF8;"></span>Baixa</span>
+                <div style="margin-bottom: 14px; display:flex; gap:12px; font-size:11px; color:var(--text-muted); font-weight: 600;">
+                  <span style="display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#e8247a;box-shadow:0 0 8px #e8247a;"></span>Alta</span>
+                  <span style="display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#b020c0;"></span>Média</span>
+                  <span style="display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#5f2bdb;"></span>Baixa</span>
                 </div>
                 <div class="heatmap-list" id="heatmapList"></div>
               </div>
@@ -464,7 +471,7 @@
               <div class="card-header">
                 <div>
                   <h3 class="card-title">Ranking de performance</h3>
-                  <p class="card-sub">% de resolução dentro do SLA</p>
+                  <p class="card-sub">% resolução dentro do SLA</p>
                 </div>
               </div>
               <div class="secretaria-list" id="secretariaList"></div>
@@ -484,17 +491,17 @@
         </section>
 
         <!-- ============================================== -->
-        <!-- SEÇÃO: CINTIA AI                               -->
+        <!-- SEÇÃO: CINTIA CORE                             -->
         <!-- ============================================== -->
         <section class="section" id="section-cintia">
 
           <div class="insight-card">
             <div class="insight-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
             </div>
             <div class="insight-body" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
               <div>
-                <div class="insight-label">Status da Cintia</div>
+                <div class="insight-label">Status da CintIA</div>
                 <p class="insight-text">Agente operando normalmente · <b>0 erros</b> nas últimas 24h · latência média de resposta: <b>1.2s</b></p>
               </div>
               <span class="cintia-status"><span class="pulse"></span> Online</span>
@@ -504,38 +511,38 @@
           <div class="kpi-grid">
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
                 <div><div class="kpi-label">Conversas hoje</div></div>
               </div>
-              <div class="kpi-value">1.284</div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 14.3%</div>
+              <div class="kpi-value grad">1.284</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 14.3%</span>
             </div>
 
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></div>
+                <div class="kpi-icon pink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></div>
                 <div><div class="kpi-label">Resolução autônoma</div></div>
               </div>
               <div class="kpi-value">64.3<small>%</small></div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 5.7pts</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 5.7pts</span>
             </div>
 
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                <div class="kpi-icon magenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
                 <div><div class="kpi-label">Tempo médio resposta</div></div>
               </div>
               <div class="kpi-value">1.2<small>s</small></div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 10l-5 5-5-5z"/></svg> -0.4s</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 10l-5 5-5-5z"/></svg> -0.4s</span>
             </div>
 
             <div class="kpi-card">
               <div class="kpi-header">
-                <div class="kpi-icon sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                 <div><div class="kpi-label">Cidadãos únicos (mês)</div></div>
               </div>
               <div class="kpi-value">12.847</div>
-              <div class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 18.4%</div>
+              <span class="kpi-trend up"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg> 18.4%</span>
             </div>
           </div>
 
@@ -554,7 +561,7 @@
               <div class="card-header">
                 <div>
                   <h3 class="card-title">Conversa exemplo</h3>
-                  <p class="card-sub">Trecho real do fluxo da Cintia</p>
+                  <p class="card-sub">Trecho real do fluxo da CintIA no WhatsApp</p>
                 </div>
                 <span class="cintia-status"><span class="pulse"></span> Ao vivo</span>
               </div>
@@ -583,7 +590,7 @@
               <div class="card-header">
                 <div>
                   <h3 class="card-title">Canais de origem</h3>
-                  <p class="card-sub">Onde a Cintia está</p>
+                  <p class="card-sub">Onde a CintIA está</p>
                 </div>
               </div>
               <div class="chart-wrap"><canvas id="chartCanais"></canvas></div>
@@ -613,7 +620,7 @@
                 <p class="card-sub">Em breve · personalize sua experiência</p>
               </div>
             </div>
-            <p style="color: var(--text-muted); padding: 24px 0;">
+            <p style="color: var(--text-muted); padding: 24px 0; font-weight: 500;">
               Aqui você poderá ajustar permissões de acesso, alertas, integrações com sistemas legados da prefeitura e exportações automáticas.
             </p>
           </div>

@@ -108,8 +108,8 @@
         value: D.kpis.cidadaosAtendidos.valor.toLocaleString('pt-BR'),
         trend: D.kpis.cidadaosAtendidos.deltaPct,
         spark: D.kpis.cidadaosAtendidos.spark,
-        sparkColor: '#00C896',
-        icon: 'green',
+        sparkColor: '#5f2bdb',
+        icon: 'purple',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
       },
       {
@@ -118,8 +118,8 @@
         suffix: '%',
         trend: D.kpis.demandasResolvidas.deltaPct,
         spark: D.kpis.demandasResolvidas.spark,
-        sparkColor: '#00C896',
-        icon: 'sky',
+        sparkColor: '#e8247a',
+        icon: 'pink',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
       },
       {
@@ -127,8 +127,8 @@
         value: '+' + D.kpis.npsMedio.valor,
         trend: D.kpis.npsMedio.deltaPct,
         spark: D.kpis.npsMedio.spark,
-        sparkColor: '#8B5CF6',
-        icon: 'violet',
+        sparkColor: '#a78bfa',
+        icon: 'magenta',
         svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'
       },
       {
@@ -146,8 +146,8 @@
         suffix: '%',
         trend: D.kpis.resolucaoAutonoma.deltaPct,
         spark: D.kpis.resolucaoAutonoma.spark,
-        sparkColor: '#00C896',
-        icon: 'green',
+        sparkColor: '#b020c0',
+        icon: 'magenta',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>'
       },
       {
@@ -236,8 +236,8 @@
   }
 
   function getSecColorTag(id) {
-    const map = { saude: 'amber', educacao: 'sky', obras: 'amber', seguranca: 'violet', fazenda: 'green', social: 'violet', meio: 'green', transp: 'violet' };
-    return map[id] || 'sky';
+    const map = { saude: 'pink', educacao: 'sky', obras: 'amber', seguranca: 'purple', fazenda: 'magenta', social: 'pink', meio: 'green', transp: 'purple' };
+    return map[id] || 'purple';
   }
 
   function avatarHtml(nome, variant) {
@@ -354,7 +354,7 @@
   function renderWordCloud() {
     const el = document.getElementById('wordCloud');
     if (!el) return;
-    const colors = ['#00C896', '#8B5CF6', '#38BDF8', '#F59E0B', '#FF6B6B', '#EC4899', '#22C55E'];
+    const colors = ['#e8247a', '#5f2bdb', '#b020c0', '#a78bfa', '#FF007B', '#6600FF', '#38BDF8'];
     el.innerHTML = D.topPalavras.map((p, i) => {
       const size = 14 + (p.peso / 100) * 28; // 14 a 42px
       const opacity = 0.5 + (p.peso / 100) * 0.5;
