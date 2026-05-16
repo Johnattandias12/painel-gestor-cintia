@@ -129,6 +129,18 @@
     renderDemandsFull();
   }
 
+  function applyPeriod() {
+    renderKPIs();
+    if (window.CINTIA_CHARTS && window.CINTIA_CHARTS.updatePeriod) {
+      window.CINTIA_CHARTS.updatePeriod(STATE.periodo);
+    }
+    const sub = $('#page-sub');
+    if (sub && STATE.section === 'overview') {
+      const map = { '7d': 'Últimos 7 dias', '30d': 'Últimos 30 dias', '90d': 'Últimos 90 dias', '12m': 'Últimos 12 meses' };
+      sub.textContent = `Painel executivo · ${map[STATE.periodo] || ''}`;
+    }
+  }
+
   function initFilters() {
     // Período
     $$('#periodChips .chip').forEach(c => {
@@ -137,6 +149,7 @@
         c.classList.add('active');
         STATE.periodo = c.dataset.p;
         toast(`Período: ${c.textContent.trim()}`);
+        applyPeriod();
         applyFilters();
       });
     });
@@ -174,7 +187,7 @@
 
     // Export
     const btnExport = $('.btn-export');
-    if (btnExport) btnExport.addEventListener('click', exportCSV);
+    if (btnExport) btnExport.addEventListener('click', exportXLSX);
   }
 
   function filteredDemandas() {
@@ -190,29 +203,68 @@
   }
 
   /* =========================================================
-     EXPORT CSV
+     EXPORT XLSX (SheetJS) — colunas separadas e formatadas
      ========================================================= */
-  function exportCSV() {
+  function exportXLSX() {
     const list = filteredDemandas();
     if (!list.length) { toast('Nenhuma demanda para exportar'); return; }
+    if (typeof XLSX === 'undefined') { toast('Biblioteca XLSX não carregou ainda — tente em 2s'); return; }
 
-    const head = ['Protocolo', 'Cidadão', 'Bairro', 'Assunto', 'Categoria', 'Secretaria', 'Status', 'Prioridade', 'SLA', 'Canal', 'Data'];
+    const head = ['Protocolo', 'Cidadão', 'Bairro', 'Assunto', 'Categoria', 'Secretaria', 'Status', 'Prioridade', 'SLA', 'Canal', 'Data', 'Avaliação'];
     const rows = list.map(d => [
       d.id, d.cidadao, d.bairro, d.assunto, d.categoria, getSecNome(d.secretaria),
-      labelStatus(d.status), d.prioridade, d.sla, d.canal, d.data
+      labelStatus(d.status), d.prioridade, d.sla, d.canal, d.data, d.avaliacao || ''
     ]);
 
-    const csv = [head, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `demandas-cintia-${new Date().toISOString().slice(0, 10)}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    toast(`${list.length} demandas exportadas em CSV`);
+    const ws = XLSX.utils.aoa_to_sheet([head, ...rows]);
+
+    // Larguras das colunas
+    ws['!cols'] = [
+      { wch: 12 }, { wch: 26 }, { wch: 20 }, { wch: 48 }, { wch: 22 },
+      { wch: 22 }, { wch: 16 }, { wch: 12 }, { wch: 22 }, { wch: 12 }, { wch: 14 }, { wch: 10 }
+    ];
+
+    // Linha 1 (cabeçalho) com altura maior
+    ws['!rows'] = [{ hpx: 28 }];
+
+    // Aplicar negrito no cabeçalho via cell styles (SheetJS community não estiliza, mas mantemos a estrutura)
+    head.forEach((_, idx) => {
+      const cell = ws[XLSX.utils.encode_cell({ r: 0, c: idx })];
+      if (cell) cell.s = { font: { bold: true } };
+    });
+
+    // Worksheet 2 — KPIs do período atual
+    const k = D.kpisByPeriod[STATE.periodo] || D.kpis;
+    const kpiData = [
+      ['Indicador', 'Valor', 'Variação (%)'],
+      ['Cidadãos atendidos', k.cidadaosAtendidos.valor, k.cidadaosAtendidos.deltaPct],
+      ['Demandas resolvidas (taxa %)', k.demandasResolvidas.taxa, k.demandasResolvidas.deltaPct],
+      ['NPS médio', k.npsMedio.valor, k.npsMedio.deltaPct],
+      ['Tempo médio de resposta', k.tempoMedio.valor, k.tempoMedio.deltaPct],
+      ['Resolução autônoma (%)', k.resolucaoAutonoma.valor, k.resolucaoAutonoma.deltaPct],
+      ['Demandas em atraso', k.demandasAtraso.valor, k.demandasAtraso.deltaPct],
+      ['Conversas hoje', k.conversasDia.valor, k.conversasDia.deltaPct],
+      ['Satisfação geral', k.satisfacao.valor, k.satisfacao.deltaPct]
+    ];
+    const wsKpi = XLSX.utils.aoa_to_sheet(kpiData);
+    wsKpi['!cols'] = [{ wch: 32 }, { wch: 18 }, { wch: 16 }];
+
+    // Worksheet 3 — Performance secretarias
+    const secData = [
+      ['Secretaria', 'Total recebidas', 'Resolvidas', 'Taxa (%)'],
+      ...D.demandasPorSecretaria.map(s => [s.nome, s.total, s.resolvidas, s.taxa])
+    ];
+    const wsSec = XLSX.utils.aoa_to_sheet(secData);
+    wsSec['!cols'] = [{ wch: 24 }, { wch: 16 }, { wch: 14 }, { wch: 12 }];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Demandas');
+    XLSX.utils.book_append_sheet(wb, wsKpi, 'KPIs');
+    XLSX.utils.book_append_sheet(wb, wsSec, 'Secretarias');
+
+    const filename = `painel-cintia-${STATE.periodo}-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    XLSX.writeFile(wb, filename);
+    toast(`${list.length} demandas exportadas em XLSX (3 abas)`);
   }
 
   /* =========================================================
@@ -222,22 +274,24 @@
     const grid = $('#kpiGrid');
     if (!grid) return;
 
+    const k = (D.kpisByPeriod && D.kpisByPeriod[STATE.periodo]) || D.kpis;
+
     const items = [
-      { label: 'Cidadãos atendidos', value: D.kpis.cidadaosAtendidos.valor.toLocaleString('pt-BR'), trend: D.kpis.cidadaosAtendidos.deltaPct, spark: D.kpis.cidadaosAtendidos.spark, sparkColor: '#5f2bdb', icon: 'purple', goto: 'cintia',
+      { label: 'Cidadãos atendidos', value: k.cidadaosAtendidos.valor.toLocaleString('pt-BR'), trend: k.cidadaosAtendidos.deltaPct, icon: 'purple', goto: 'cintia',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>' },
-      { label: 'Demandas resolvidas', value: D.kpis.demandasResolvidas.taxa.toFixed(1), suffix: '%', trend: D.kpis.demandasResolvidas.deltaPct, spark: D.kpis.demandasResolvidas.spark, sparkColor: '#e8247a', icon: 'pink', goto: 'demandas',
+      { label: 'Demandas resolvidas', value: k.demandasResolvidas.taxa.toFixed(1), suffix: '%', trend: k.demandasResolvidas.deltaPct, icon: 'pink', goto: 'demandas',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>' },
-      { label: 'NPS médio', value: '+' + D.kpis.npsMedio.valor, trend: D.kpis.npsMedio.deltaPct, spark: D.kpis.npsMedio.spark, sparkColor: '#a78bfa', icon: 'magenta', goto: 'ouvidoria',
+      { label: 'NPS médio', value: '+' + k.npsMedio.valor, trend: k.npsMedio.deltaPct, icon: 'magenta', goto: 'ouvidoria',
         svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>' },
-      { label: 'Tempo médio resposta', value: D.kpis.tempoMedio.valor, trend: D.kpis.tempoMedio.deltaPct, spark: D.kpis.tempoMedio.spark, sparkColor: '#F59E0B', icon: 'amber', goto: 'cintia',
+      { label: 'Tempo médio resposta', value: k.tempoMedio.valor, trend: k.tempoMedio.deltaPct, icon: 'amber', goto: 'cintia',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' },
-      { label: 'Resolução autônoma', value: D.kpis.resolucaoAutonoma.valor.toFixed(1), suffix: '%', trend: D.kpis.resolucaoAutonoma.deltaPct, spark: D.kpis.resolucaoAutonoma.spark, sparkColor: '#b020c0', icon: 'magenta', goto: 'cintia',
+      { label: 'Resolução autônoma', value: k.resolucaoAutonoma.valor.toFixed(1), suffix: '%', trend: k.resolucaoAutonoma.deltaPct, icon: 'magenta', goto: 'cintia',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>' },
-      { label: 'Demandas em atraso', value: D.kpis.demandasAtraso.valor, trend: D.kpis.demandasAtraso.deltaPct, spark: D.kpis.demandasAtraso.spark, sparkColor: '#FF6B6B', icon: 'coral', goto: 'demandas',
+      { label: 'Demandas em atraso', value: k.demandasAtraso.valor, trend: k.demandasAtraso.deltaPct, icon: 'coral', goto: 'demandas',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
-      { label: 'Conversas hoje', value: D.kpis.conversasDia.valor.toLocaleString('pt-BR'), trend: D.kpis.conversasDia.deltaPct, spark: D.kpis.conversasDia.spark, sparkColor: '#38BDF8', icon: 'sky', goto: 'cintia',
+      { label: 'Conversas hoje', value: k.conversasDia.valor.toLocaleString('pt-BR'), trend: k.conversasDia.deltaPct, icon: 'sky', goto: 'cintia',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' },
-      { label: 'Satisfação geral', value: D.kpis.satisfacao.valor.toFixed(1), suffix: ' / 5', trend: D.kpis.satisfacao.deltaPct, spark: D.kpis.satisfacao.spark, sparkColor: '#F59E0B', icon: 'amber', goto: 'ouvidoria',
+      { label: 'Satisfação geral', value: k.satisfacao.valor.toFixed(1), suffix: ' / 5', trend: k.satisfacao.deltaPct, icon: 'amber', goto: 'ouvidoria',
         svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>' }
     ];
 
@@ -259,7 +313,6 @@
             ${Math.abs(it.trend).toFixed(1)}%
             <span class="lbl">vs. período anterior</span>
           </span>
-          <canvas class="kpi-spark" id="spark-${idx}"></canvas>
         </div>
       `;
     }).join('');
@@ -271,15 +324,6 @@
         if (goto) showSection(goto);
       });
     });
-
-    // Sparklines
-    setTimeout(() => {
-      items.forEach((it, idx) => {
-        if (window.CINTIA_CHARTS) {
-          safe(() => window.CINTIA_CHARTS.buildSparkline('spark-' + idx, it.spark, it.sparkColor), 'sparkline-' + idx);
-        }
-      });
-    }, 80);
   }
 
   /* =========================================================

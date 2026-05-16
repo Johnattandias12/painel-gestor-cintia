@@ -66,9 +66,16 @@ window.CINTIA_CHARTS = (() => {
     return grad;
   }
 
+  // Período corrente (controla qual série temporal usar)
+  let currentPeriod = '30d';
+
+  function getSerie() {
+    return (CINTIA_DATA.seriesByPeriod && CINTIA_DATA.seriesByPeriod[currentPeriod]) || CINTIA_DATA.atendimentosPorDia;
+  }
+
   // --------- Linha duplo: atendimentos CintIA vs Humano ---------
   function buildAtendimentos() {
-    const d = CINTIA_DATA.atendimentosPorDia;
+    const d = getSerie();
     const el = document.getElementById('chartAtendimentos');
     if (!el) return;
     const ctx = el.getContext('2d');
@@ -272,7 +279,7 @@ window.CINTIA_CHARTS = (() => {
 
   // --------- Área: conversas CintIA ---------
   function buildConversas() {
-    const d = CINTIA_DATA.atendimentosPorDia;
+    const d = getSerie();
     const el = document.getElementById('chartConversas');
     if (!el) return;
     const ctx = el.getContext('2d');
@@ -423,5 +430,10 @@ window.CINTIA_CHARTS = (() => {
     init();
   }
 
-  return { init, reinit, buildSparkline, charts, BRAND, ACCENT };
+  function updatePeriod(period) {
+    currentPeriod = period;
+    reinit();
+  }
+
+  return { init, reinit, updatePeriod, buildSparkline, charts, BRAND, ACCENT };
 })();
