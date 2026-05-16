@@ -225,8 +225,6 @@ window.CINTIA_CHARTS = (() => {
     if (!el) return;
     const ctx = el.getContext('2d');
 
-    const grad = gradient(ctx, 0, 0); // placeholder
-
     // Para barras horizontais, gradiente é melhor horizontal (left → right)
     const w = el.width || 600;
     const gradReceived = ctx.createLinearGradient(0, 0, w, 0);
@@ -418,7 +416,7 @@ window.CINTIA_CHARTS = (() => {
     if (builtSections.has(name)) return;
     const builders = SECTION_BUILDERS[name];
     if (!builders) { builtSections.add(name); return; }
-    builders.forEach(fn => { try { fn(); } catch (e) { console.warn('[charts]', fn.name, e); } });
+    builders.forEach(fn => { try { fn(); } catch (e) { console.error('[charts]', fn.name, 'falhou:', e); } });
     builtSections.add(name);
   }
 
