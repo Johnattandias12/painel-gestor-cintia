@@ -110,6 +110,19 @@
       $('#page-sub').textContent = meta.sub;
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Lazy init dos charts da seção (canvas em display:none têm 0x0 antes de aparecer)
+    if (window.CINTIA_CHARTS) {
+      requestAnimationFrame(() => {
+        if (window.CINTIA_CHARTS.buildSection) window.CINTIA_CHARTS.buildSection(name);
+        // E redimensiona qualquer chart já existente que possa ter ficado dessincronizado
+        if (window.CINTIA_CHARTS.charts) {
+          Object.values(window.CINTIA_CHARTS.charts).forEach(c => {
+            if (c && typeof c.resize === 'function') c.resize();
+          });
+        }
+      });
+    }
   }
 
   function initNav() {

@@ -403,6 +403,25 @@ window.CINTIA_CHARTS = (() => {
     Object.keys(charts).forEach(k => delete charts[k]);
   }
 
+  // Mapa seção → builders dos charts daquela seção
+  // Charts em seções display:none precisam ser construídos APÓS a seção ficar visível,
+  // senão a canvas tem 0x0 e o Chart.js renderiza vazio
+  const SECTION_BUILDERS = {
+    overview:    [buildAtendimentos, buildCategoria],
+    ouvidoria:   [buildNpsRadar],
+    secretarias: [buildSecretarias, buildTempo],
+    cintia:      [buildConversas, buildCanais, buildHoras]
+  };
+  const builtSections = new Set();
+
+  function buildSection(name) {
+    if (builtSections.has(name)) return;
+    const builders = SECTION_BUILDERS[name];
+    if (!builders) { builtSections.add(name); return; }
+    builders.forEach(fn => { try { fn(); } catch (e) { console.warn('[charts]', fn.name, e); } });
+    builtSections.add(name);
+  }
+
   function init() {
     if (typeof Chart === 'undefined') {
       setTimeout(init, 80);
@@ -412,22 +431,20 @@ window.CINTIA_CHARTS = (() => {
     Chart.defaults.font.family = 'Nunito, system-ui, sans-serif';
     Chart.defaults.color = cssVar('--text-secondary');
 
-    buildAtendimentos();
-    buildCategoria();
-    buildNpsRadar();
-    buildSecretarias();
-    buildTempo();
-    buildConversas();
-    buildCanais();
-    buildHoras();
+    // Só constrói o overview no init — demais seções lazy load via buildSection()
+    buildSection('overview');
 
     initialized = true;
   }
 
   function reinit() {
+    const visited = Array.from(builtSections);
     destroyAll();
+    builtSections.clear();
     initialized = false;
     init();
+    // Reconstrói as seções que o usuário já visitou (e estão visíveis agora)
+    visited.forEach(s => { if (s !== 'overview') buildSection(s); });
   }
 
   function updatePeriod(period) {
@@ -435,5 +452,5 @@ window.CINTIA_CHARTS = (() => {
     reinit();
   }
 
-  return { init, reinit, updatePeriod, buildSparkline, charts, BRAND, ACCENT };
+  return { init, reinit, updatePeriod, buildSection, buildSparkline, charts, BRAND, ACCENT };
 })();
